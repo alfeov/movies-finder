@@ -1,0 +1,8 @@
+@use '@/styles/utils' as *;
+
+.movies {
+  @include section;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(30rem, auto));
+}

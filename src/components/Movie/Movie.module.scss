@@ -1,0 +1,38 @@
+@use '@/styles/utils' as *;
+
+.movie {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.481);
+  border-radius: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.img {
+  flex-grow: 1;
+  object-fit: cover;
+}
+
+.footer {
+  height: 15rem;
+  padding: 2rem 3rem;
+}
+
+.title {
+  margin-bottom: 0;
+  font-size: 2.4rem;
+  // truncate
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.desc {
+  margin-bottom: 0;
+  font-size: 1.6rem;
+  // truncate multiple lines
+  display: -webkit-box; // Specify that we want to use webkit-box
+  -webkit-box-orient: vertical; // Indicate the text direction
+  -webkit-line-clamp: 3; // Set the desired number of lines
+  overflow: hidden; // Hide any overflow
+}
