@@ -8,31 +8,54 @@
   flex-direction: column;
 }
 
-.img {
+.imgWrapper {
   flex-grow: 1;
+  position: relative;
+}
+
+.noImgText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: dimgray;
+  font-size: 1.8rem;
+  text-align: center;
+  :empty {
+    display: none;
+  }
+}
+
+.img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
 .footer {
-  height: 15rem;
+  height: 15.5rem;
   padding: 2rem 3rem;
 }
 
 .title {
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   font-size: 2.4rem;
-  // truncate
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  @include truncate;
 }
 
-.desc {
+.info {
   margin-bottom: 0;
   font-size: 1.6rem;
-  // truncate multiple lines
-  display: -webkit-box; // Specify that we want to use webkit-box
-  -webkit-box-orient: vertical; // Indicate the text direction
-  -webkit-line-clamp: 3; // Set the desired number of lines
-  overflow: hidden; // Hide any overflow
+  padding: 0;
+  li {
+    @include truncate;
+    &::before {
+      content: '\2022 ';
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+.link {
+  color: black;
 }

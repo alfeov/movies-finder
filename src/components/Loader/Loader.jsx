@@ -1,0 +1,18 @@
+import { TailSpin } from 'react-loader-spinner'
+
+export default function Loader() {
+  return (
+    <div style={{ margin: '8rem auto' }}>
+      <TailSpin
+        visible={true}
+        height='80'
+        width='80'
+        color='#000000'
+        ariaLabel='tail-spin-loading'
+        radius='1'
+        wrapperStyle={{}}
+        wrapperClass=''
+      />
+    </div>
+  )
+}

@@ -2,7 +2,6 @@
 
 .searchBar {
   margin: 0 auto;
-  @include section;
   @include flex-center;
   width: 100%;
   max-width: 40rem;

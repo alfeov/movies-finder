@@ -7,14 +7,13 @@
   }
 }
 
-@mixin section() {
-  margin-top: 2rem;
-  @media ($largePhone) {
-    margin-top: 3rem;
-  }
-}
-
 @mixin flex-center() {
   display: flex;
   justify-content: center;
+}
+
+@mixin truncate() {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
