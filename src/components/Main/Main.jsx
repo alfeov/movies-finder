@@ -38,7 +38,9 @@ export default class Main extends Component {
         <SearchBar searchMovies={this.searchMovies} />
         <Movies>
           {this.state.isLoading ? (
-            <Loader />
+            <div className={styles.loader}>
+              <Loader />
+            </div>
           ) : (
             this.state.movies.map((movie) => {
               return <Movie key={movie.imdbID} {...movie} />
