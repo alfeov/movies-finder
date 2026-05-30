@@ -10,5 +10,15 @@
 }
 
 .loader {
-  margin: 8rem auto;
+  justify-self: center;
+  margin-top: 5rem;
+}
+
+.emptyMessage {
+  justify-self: center;
+  margin-top: 5rem;
+  font-size: 2.4rem;
+  font-style: italic;
+  color: var(--secondary-text-color);
+  text-align: center;
 }

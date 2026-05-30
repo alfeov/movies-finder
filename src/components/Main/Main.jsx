@@ -5,6 +5,8 @@ import Movie from '@/components/Movie/Movie'
 import Loader from '@/components/Loader/Loader'
 import styles from './Main.module.scss'
 
+const API_KEY = import.meta.env.VITE_API_KEY
+
 export default class Main extends Component {
   state = {
     movies: [],
@@ -15,13 +17,14 @@ export default class Main extends Component {
     this.searchMovies()
   }
 
-  searchMovies = async (movieTitle = 'Matrix') => {
+  searchMovies = async (title = 'Matrix', type = '') => {
+    this.setState({ isLoading: true })
     try {
-      const url = `http://www.omdbapi.com/?apikey=dc7efa44&s=${movieTitle}`
+      const url = `http://www.omdbapi.com/?apikey=${API_KEY}${type !== 'all' ? `&type=${type}` : ''}&s=${title}`
       const response = await fetch(url)
       if (!response.ok) throw new Error('HTTP: ' + response.status)
       const data = await response.json()
-      this.setState({ movies: data.Search, isLoading: false })
+      this.setState({ movies: data?.Search ?? [], isLoading: false })
     } catch (error) {
       throw new Error(
         'Network or fetch error in searchMovies: ' + error.message,
@@ -41,6 +44,10 @@ export default class Main extends Component {
             <div className={styles.loader}>
               <Loader />
             </div>
+          ) : this.state.movies.length === 0 ? (
+            <p className={styles.emptyMessage}>
+              There are no results for your request
+            </p>
           ) : (
             this.state.movies.map((movie) => {
               return <Movie key={movie.imdbID} {...movie} />
