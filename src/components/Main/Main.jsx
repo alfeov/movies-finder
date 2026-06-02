@@ -11,6 +11,7 @@ export default class Main extends Component {
   state = {
     movies: [],
     isLoading: true,
+    isError: false,
   }
 
   componentDidMount() {
@@ -20,12 +21,13 @@ export default class Main extends Component {
   searchMovies = async (title = 'Matrix', type = '') => {
     this.setState({ isLoading: true })
     try {
-      const url = `http://www.omdbapi.com/?apikey=${API_KEY}${type !== 'all' ? `&type=${type}` : ''}&s=${title}`
+      const url = `https://www.omdbapi.com/?apikey=${API_KEY}${type !== 'all' ? `&type=${type}` : ''}&s=${title}`
       const response = await fetch(url)
       if (!response.ok) throw new Error('HTTP: ' + response.status)
       const data = await response.json()
       this.setState({ movies: data?.Search ?? [], isLoading: false })
     } catch (error) {
+      this.setState({ movies: [], isLoading: false, isError: true })
       throw new Error(
         'Network or fetch error in searchMovies: ' + error.message,
         {
@@ -44,6 +46,8 @@ export default class Main extends Component {
             <div className={styles.loader}>
               <Loader />
             </div>
+          ) : this.state.isError ? (
+            <p className={styles.emptyMessage}>Something went wrong</p>
           ) : this.state.movies.length === 0 ? (
             <p className={styles.emptyMessage}>
               There are no results for your request
