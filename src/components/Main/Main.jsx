@@ -8,11 +8,11 @@ import styles from './Main.module.scss'
 const API_KEY = import.meta.env.VITE_API_KEY
 
 export default function Main() {
-  const [movies, setMovies] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [movies, setMovies] = useState([])
   const [isError, setIsError] = useState(false)
 
-  async function searchMovies(title = 'Matrix', type = '') {
+  const searchMovies = async (title = 'Matrix', type = '') => {
     setIsLoading(true)
     try {
       const url = `https://www.omdbapi.com/?apikey=${API_KEY}${type !== 'all' ? `&type=${type}` : ''}&s=${title}`
@@ -35,7 +35,6 @@ export default function Main() {
   }
 
   const isFirstRender = useRef(true)
-
   useEffect(() => {
     if (isFirstRender.current) {
       isFirstRender.current = false
