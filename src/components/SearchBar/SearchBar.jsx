@@ -1,23 +1,35 @@
-import { useState } from 'react'
+import { useForm } from 'react-hook-form'
 import styles from './SearchBar.module.scss'
 
 export default function SearchBar({ searchMovies }) {
-  const [search, setSearch] = useState('')
-  const [type, setType] = useState('all')
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    setError,
+    getValues,
+  } = useForm({
+    mode: 'onBlur',
+    defaultValues: { search: '', type: 'all' },
+  })
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const searchValue = search.trim()
-    const searchType = type
-    if (searchValue) searchMovies(searchValue, searchType)
+  const performSearch = (data) => {
+    const search = data.search.trim()
+    const type = data.type
+    if (search) {
+      searchMovies(search, type)
+    } else {
+      setError('search', { type: 'custom', message: 'At least one character' })
+    }
   }
 
-  const handleFieldChange = (e) => {
-    setSearch(e.target.value)
+  const onSubmit = (data) => {
+    performSearch(data)
   }
 
-  const handleRadioChange = (e) => {
-    setType(e.target.value)
+  const handleChange = () => {
+    const values = getValues()
+    performSearch(values)
   }
 
   const handleFocus = (e) => {
@@ -30,60 +42,61 @@ export default function SearchBar({ searchMovies }) {
 
   return (
     <form
-      onSubmit={handleSubmit}
       className={styles.form}
-      role='search'
+      onSubmit={handleSubmit(onSubmit)}
       autoComplete='off'
     >
       <div className={styles.searchGroup}>
-        <input
-          className={styles.field}
-          name='search'
-          type='search'
-          placeholder='Search Movie'
-          value={search}
-          onChange={handleFieldChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-        />
-        <input className={styles.button} type='submit' value='Search' />
+        <div className={styles.searchInputGroup}>
+          <input
+            className={styles.field}
+            type='search'
+            onFocus={handleFocus}
+            {...register('search', {
+              required: 'This field is required',
+              pattern: {
+                value: /^[A-Za-z\s]+$/,
+                message: 'Only latin characters',
+              },
+              onBlur: handleBlur,
+            })}
+            placeholder='Search Movie'
+          />
+          <input className={styles.button} type='submit' value='Search' />
+        </div>
+        {errors?.search && (
+          <div className='error-message'>
+            <p>{errors?.search?.message}</p>
+          </div>
+        )}
       </div>
 
       <div className={styles.typeGroup}>
         <p className={styles.text}>Type: </p>
-        <label className={styles.label} htmlFor='all'>
+        <label className={styles.label}>
           <input
-            id='all'
             className={styles.radio}
             type='radio'
-            name='type'
             value='all'
-            checked={type === 'all'}
-            onChange={handleRadioChange}
+            {...register('type', { onChange: handleChange })}
           />
           All
         </label>
-        <label className={styles.label} htmlFor='movies'>
+        <label className={styles.label}>
           <input
-            id='movies'
             className={styles.radio}
             type='radio'
-            name='type'
             value='movie'
-            checked={type === 'movie'}
-            onChange={handleRadioChange}
+            {...register('type', { onChange: handleChange })}
           />
           Movies
         </label>
-        <label className={styles.label} htmlFor='series'>
+        <label className={styles.label}>
           <input
-            id='series'
             className={styles.radio}
             type='radio'
-            name='type'
             value='series'
-            checked={type === 'series'}
-            onChange={handleRadioChange}
+            {...register('type', { onChange: handleChange })}
           />
           Series
         </label>
