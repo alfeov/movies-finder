@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import Loader from '@/components/Loader/Loader'
+import { Loader } from '@/components/Loader/Loader'
 import styles from './Movie.module.scss'
 import image from '@/assets/images/no-image.png'
 
-export default function Movie({
+export function Movie({
   Poster: poster,
   Title: title,
   Type: type,
@@ -25,17 +25,15 @@ export default function Movie({
   return (
     <article className={styles.movie}>
       <div className={styles.imgWrapper}>
-        {imgLoading && (
-          <div className={styles.imgLoader}>
-            <Loader />
-          </div>
-        )}
+        {imgLoading && <Loader />}
         {!imgError ? (
           <img
             className={styles.img}
             style={{
+              width: imgLoading ? '0' : '100%',
               opacity: imgLoading ? '0' : '1',
             }}
+            loading='lazy'
             src={poster}
             alt='Movie image'
             onError={handleError}

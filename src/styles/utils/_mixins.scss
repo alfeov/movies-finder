@@ -7,11 +7,6 @@
   }
 }
 
-@mixin flex-center() {
-  display: flex;
-  justify-content: center;
-}
-
 @mixin truncate() {
   white-space: nowrap;
   text-overflow: ellipsis;

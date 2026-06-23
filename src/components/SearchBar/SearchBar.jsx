@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form'
 import styles from './SearchBar.module.scss'
+import { useIsFetching } from '@tanstack/react-query'
 
-export default function SearchBar({ searchMovies }) {
+export function SearchBar({ setSearch }) {
+  const isFetching = useIsFetching()
   const {
     register,
     formState: { errors },
@@ -14,10 +16,10 @@ export default function SearchBar({ searchMovies }) {
   })
 
   const performSearch = (data) => {
-    const search = data.search.trim()
+    const title = data.search.trim()
     const type = data.type
-    if (search) {
-      searchMovies(search, type)
+    if (title) {
+      setSearch({ title, type })
     } else {
       setError('search', { type: 'custom', message: 'At least one character' })
     }
@@ -40,67 +42,68 @@ export default function SearchBar({ searchMovies }) {
     e.target.parentElement.classList.toggle('active', false)
   }
 
-  return (
-    <form
-      className={styles.form}
-      onSubmit={handleSubmit(onSubmit)}
-      autoComplete='off'
-    >
-      <div className={styles.searchGroup}>
-        <div className={styles.searchInputGroup}>
-          <input
-            className={styles.field}
-            type='search'
-            onFocus={handleFocus}
-            {...register('search', {
-              required: 'This field is required',
-              pattern: {
-                value: /^[A-Za-z\s]+$/,
-                message: 'Only latin characters',
-              },
-              onBlur: handleBlur,
-            })}
-            placeholder='Search Movie'
-          />
-          <input className={styles.button} type='submit' value='Search' />
-        </div>
-        {errors?.search && (
-          <div className='error-message'>
-            <p>{errors?.search?.message}</p>
-          </div>
-        )}
-      </div>
+  console.log(isFetching)
 
-      <div className={styles.typeGroup}>
-        <p className={styles.text}>Type: </p>
-        <label className={styles.label}>
-          <input
-            className={styles.radio}
-            type='radio'
-            value='all'
-            {...register('type', { onChange: handleChange })}
-          />
-          All
-        </label>
-        <label className={styles.label}>
-          <input
-            className={styles.radio}
-            type='radio'
-            value='movie'
-            {...register('type', { onChange: handleChange })}
-          />
-          Movies
-        </label>
-        <label className={styles.label}>
-          <input
-            className={styles.radio}
-            type='radio'
-            value='series'
-            {...register('type', { onChange: handleChange })}
-          />
-          Series
-        </label>
-      </div>
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
+      <fieldset className={styles.fieldset} disabled={isFetching > 0}>
+        <div className={styles.searchGroup}>
+          <div className={styles.searchInputGroup}>
+            <input
+              className={styles.field}
+              type='search'
+              onFocus={handleFocus}
+              {...register('search', {
+                required: 'This field is required',
+                pattern: {
+                  value: /^[A-Za-z\s]+$/,
+                  message: 'Only latin characters',
+                },
+                onBlur: handleBlur,
+              })}
+              placeholder='Search Movie'
+            />
+            <input className={styles.button} type='submit' value='Search' />
+          </div>
+          {errors?.search && (
+            <div className='error-message'>
+              <p>{errors?.search?.message}</p>
+            </div>
+          )}
+        </div>
+
+        <div className={styles.typeGroup}>
+          <p className={styles.text}>Type: </p>
+
+          <label className={styles.label}>
+            <input
+              className={styles.radio}
+              type='radio'
+              value='all'
+              {...register('type', { onChange: handleChange })}
+            />
+            All
+          </label>
+          <label className={styles.label}>
+            <input
+              className={styles.radio}
+              type='radio'
+              value='movie'
+              {...register('type', { onChange: handleChange })}
+            />
+            Movies
+          </label>
+          <label className={styles.label}>
+            <input
+              className={styles.radio}
+              type='radio'
+              value='series'
+              {...register('type', { onChange: handleChange })}
+            />
+            Series
+          </label>
+        </div>
+      </fieldset>
     </form>
   )
 }

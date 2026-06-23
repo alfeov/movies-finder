@@ -1,0 +1,26 @@
+@use '@/styles/utils' as *;
+
+.header {
+  box-shadow: 0 0 6px var(--color-primary);
+  width: 100%;
+}
+
+.container {
+  height: 8rem;
+  display: flex;
+  align-items: center;
+  @include container;
+}
+.link {
+  font-size: 3rem;
+  text-decoration: none;
+  color: var(--text-color-primary);
+}
+
+.main {
+  padding: 4rem;
+  min-height: calc(100vh - 8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

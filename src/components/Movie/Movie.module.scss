@@ -1,22 +1,23 @@
 @use '@/styles/utils' as *;
 
 .movie {
-  box-shadow: 0 0 6px black;
+  box-shadow: 0 0 6px var(--color-primary);
   border-radius: 2rem;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   transition: box-shadow 400ms;
   &:hover {
-    box-shadow: 0 0 20px black;
+    box-shadow: 0 0 20px var(--color-primary);
   }
 }
 
 .imgWrapper {
-  flex-grow: 1;
+  display: flex;
   position: relative;
-  width: 100%;
+  flex-grow: 1;
   aspect-ratio: 300 / 445;
+  width: 100%;
 }
 
 .noImgText {
@@ -24,16 +25,9 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: var(--secondary-text-color);
+  color: var(--text-color-notActive);
   font-size: 1.8rem;
   text-align: center;
-}
-
-.imgLoader {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .img {
@@ -68,5 +62,5 @@
 }
 
 .link {
-  color: var(--primary-text-color);
+  color: var(--text-color-primary);
 }
