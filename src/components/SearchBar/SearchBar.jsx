@@ -42,8 +42,6 @@ export function SearchBar({ setSearch }) {
     e.target.parentElement.classList.toggle('active', false)
   }
 
-  console.log(isFetching)
-
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete='off'>
       <fieldset className={styles.fieldset} disabled={isFetching > 0}>

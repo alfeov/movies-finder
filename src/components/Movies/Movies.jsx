@@ -1,18 +1,14 @@
-import { useSuspenseQuery } from '@tanstack/react-query'
-import { getMovies } from '@/api/getMovies'
+import { useMoviesSuspenseInfiniteQuery } from '@/hooks/useMoviesSuspenseInfiniteQuery'
 import { Movie } from '@/components/Movie/Movie'
+import { EmptyMessage } from '@/components/EmptyMessage/EmptyMessage'
 import styles from './Movies.module.scss'
-import { EmptyMessage } from '../EmptyMessage/EmptyMessage'
 
 export function Movies({ search }) {
-  const { data } = useSuspenseQuery({
-    queryKey: ['movies', search],
-    queryFn: () => getMovies(search),
-    staleTime: Infinity,
-  })
+  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, error } =
+    useMoviesSuspenseInfiniteQuery({ search })
 
-  const movies = data?.Search ?? []
-  const totalMovies = data?.totalResults ?? 0
+  const movies = data?.pages?.map((page) => page?.Search || []).flat() ?? []
+  const totalMovies = data?.pages?.[0]?.totalResults ?? 0
 
   return (
     <div>
@@ -25,6 +21,9 @@ export function Movies({ search }) {
           return <Movie key={movie.imdbID} {...movie} />
         })}
       </div>
+      <button onClick={fetchNextPage} disabled={!hasNextPage}>
+        Load More
+      </button>
     </div>
   )
 }
