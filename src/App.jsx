@@ -5,7 +5,9 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Layout } from '@/components/Layout/Layout'
 import { ErrorBoundaryOutlet } from '@/components/ErrorBoundaryOutlet/ErrorBoundaryOutlet'
 import { ErrorBoundary } from '@/components/ErrorBoundary/ErrorBoundary'
+
 import { MoviesPage } from '@/pages/MoviesPage'
+import { NotfoundPage } from '@/pages/NotFoundPage'
 
 const queryClient = new QueryClient()
 
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
           {
             index: true,
             Component: MoviesPage,
+          },
+          {
+            path: '*',
+            Component: NotfoundPage,
           },
         ],
       },

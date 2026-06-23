@@ -1,16 +1,20 @@
-import { Suspense, useState } from 'react'
+import { Suspense } from 'react'
 import { SearchBar } from '@/components/SearchBar/SearchBar'
 import { Movies } from '@/components/Movies/Movies'
 import { Loader } from '@/components/Loader/Loader'
-
-const initialSearch = { title: 'Matrix', type: 'all' }
+import { useSearchParams } from 'react-router'
 
 export function MoviesPage() {
-  const [search, setSearch] = useState(initialSearch)
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const search = {
+    title: searchParams.get('title') ?? 'Matrix',
+    type: searchParams.get('type') ?? 'all',
+  }
 
   return (
     <>
-      <SearchBar setSearch={setSearch} />
+      <SearchBar search={search} setSearchParams={setSearchParams} />
       <Suspense fallback={<Loader margin='7rem auto' isLabel={true} />}>
         <Movies search={search} />
       </Suspense>

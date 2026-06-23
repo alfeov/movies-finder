@@ -7,7 +7,6 @@ import { Loader } from '@/components/Loader/Loader'
 import { useInfiniteScrollObserver } from '@/hooks/useInfiniteScrollObserver'
 
 export function Movies({ search }) {
-  // const observer = useRef(null)
   const observableEntry = useRef(null)
   const { data, hasNextPage, fetchNextPage, isFetching } =
     useMoviesSuspenseInfiniteQuery({ search })

@@ -2,8 +2,9 @@ import { useForm } from 'react-hook-form'
 import styles from './SearchBar.module.scss'
 import { useIsFetching } from '@tanstack/react-query'
 
-export function SearchBar({ setSearch }) {
+export function SearchBar({ search, setSearchParams }) {
   const isFetching = useIsFetching()
+
   const {
     register,
     formState: { errors },
@@ -12,16 +13,16 @@ export function SearchBar({ setSearch }) {
     getValues,
   } = useForm({
     mode: 'onBlur',
-    defaultValues: { search: '', type: 'all' },
+    defaultValues: { title: search.title, type: search.type },
   })
 
   const performSearch = (data) => {
-    const title = data.search.trim()
+    const title = data.title.trim()
     const type = data.type
     if (title) {
-      setSearch({ title, type })
+      setSearchParams({ title, type })
     } else {
-      setError('search', { type: 'custom', message: 'At least one character' })
+      setError('title', { type: 'custom', message: 'At least one character' })
     }
   }
 
@@ -51,7 +52,7 @@ export function SearchBar({ setSearch }) {
               className={styles.field}
               type='search'
               onFocus={handleFocus}
-              {...register('search', {
+              {...register('title', {
                 required: 'This field is required',
                 pattern: {
                   value: /^[A-Za-z\s]+$/,
@@ -63,9 +64,9 @@ export function SearchBar({ setSearch }) {
             />
             <input className={styles.button} type='submit' value='Search' />
           </div>
-          {errors?.search && (
+          {errors?.title && (
             <div className='error-message'>
-              <p>{errors?.search?.message}</p>
+              <p>{errors?.title?.message}</p>
             </div>
           )}
         </div>
