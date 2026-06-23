@@ -2,10 +2,22 @@ import { useMoviesSuspenseInfiniteQuery } from '@/hooks/useMoviesSuspenseInfinit
 import { Movie } from '@/components/Movie/Movie'
 import { EmptyMessage } from '@/components/EmptyMessage/EmptyMessage'
 import styles from './Movies.module.scss'
+import { useRef } from 'react'
+import { Loader } from '@/components/Loader/Loader'
+import { useInfiniteScrollObserver } from '@/hooks/useInfiniteScrollObserver'
 
 export function Movies({ search }) {
-  const { data, hasNextPage, fetchNextPage, isFetchingNextPage, error } =
+  // const observer = useRef(null)
+  const observableEntry = useRef(null)
+  const { data, hasNextPage, fetchNextPage, isFetching } =
     useMoviesSuspenseInfiniteQuery({ search })
+  useInfiniteScrollObserver(
+    fetchNextPage,
+    observableEntry,
+    hasNextPage && !isFetching,
+    [hasNextPage, isFetching],
+    { rootMargin: '800px' },
+  )
 
   const movies = data?.pages?.map((page) => page?.Search || []).flat() ?? []
   const totalMovies = data?.pages?.[0]?.totalResults ?? 0
@@ -21,9 +33,8 @@ export function Movies({ search }) {
           return <Movie key={movie.imdbID} {...movie} />
         })}
       </div>
-      <button onClick={fetchNextPage} disabled={!hasNextPage}>
-        Load More
-      </button>
+      <div ref={observableEntry}></div>
+      {isFetching && <Loader margin='8rem auto' isLabel={true} />}
     </div>
   )
 }
