@@ -55,8 +55,8 @@ export function SearchBar({ search, setSearchParams }) {
               {...register('title', {
                 required: 'This field is required',
                 pattern: {
-                  value: /^[A-Za-z\s]+$/,
-                  message: 'Only latin characters',
+                  value: /^['\dA-Za-z\s]+$/,
+                  message: 'Only latin characters, numbers and apostrophe',
                 },
                 onBlur: handleBlur,
               })}
